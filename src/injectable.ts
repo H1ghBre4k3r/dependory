@@ -2,32 +2,28 @@ import "reflect-metadata";
 
 export function Injectable() {
     return function(clazz: any) {
-        inject(clazz);
-    };
-}
-
-async function inject(clazz: any) {
-    if (!clazz) {
-        throw new Error(`Argument must be of type class`);
-    }
-    // Get constructor arguments
-    const args = Reflect.getMetadata("design:paramtypes", clazz);
-
-    // Fetch all new arguments out of the registry
-    const newArgs = args.map((arg: any) => {
-        const hash = Registry.getHash(arg);
-        let param;
-        // Wait, until all depencies are resolved
-        while (!param) {
-            param = Registry.get(hash);
+        if (!clazz) {
+            throw new Error(`Argument must be of type class`);
         }
-        return param;
-    });
+        // Get constructor arguments
+        const args = Reflect.getMetadata("design:paramtypes", clazz);
 
-    // Instantiate object and register it in the registry
-    const hash = Registry.getHash(clazz);
-    const instance = new clazz(...newArgs);
-    Registry.set(hash, instance);
+        // Fetch all new arguments out of the registry
+        const newArgs = args.map((arg: any) => {
+            const hash = Registry.getHash(arg);
+            let param;
+            // Wait, until all depencies are resolved
+            while (!param) {
+                param = Registry.get(hash);
+            }
+            return param;
+        });
+
+        // Instantiate object and register it in the registry
+        const hash = Registry.getHash(clazz);
+        const instance = new clazz(...newArgs);
+        Registry.set(hash, instance);
+    };
 }
 
 class Registry {
