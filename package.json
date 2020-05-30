@@ -2,7 +2,7 @@
     "name": "typescript-dependency-injection",
     "version": "1.0.0",
     "description": "Some typescript dependency injection",
-    "main": "build/index.js",
+    "main": "build/injectable.js",
     "scripts": {
         "start": "node .",
         "build": "tsc",
@@ -13,5 +13,8 @@
         "tslint": "^6.1.2",
         "tslint-config-prettier": "^1.18.0",
         "typescript": "^3.8.3"
+    },
+    "dependencies": {
+        "reflect-metadata": "^0.1.13"
     }
 }
