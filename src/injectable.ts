@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
-export function Injectable() {
-    return function(clazz: any) {
+export function Injectable(): (clazz: any) => void {
+    return function(clazz: any): void {
         if (!clazz) {
             throw new Error(`Argument must be of type class`);
         }
@@ -26,27 +26,26 @@ export function Injectable() {
     };
 }
 
+// tslint:disable-next-line: no-unnecessary-class
 class Registry {
     private static registry = new Map<string, any>();
 
-    static isClass(clazz: any) {
+    public static isClass(clazz: any): boolean {
         return /^\s*class/.test(clazz.toString());
     }
 
-    static getHash(clazz: any) {
+    public static getHash(clazz: any): string {
         const str = clazz.toString();
-        let hash = 0,
-            i,
-            chr;
-        for (i = 0; i < str.length; i++) {
-            chr = str.charCodeAt(i);
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            const chr = str.charCodeAt(i);
             hash = (hash << 5) - hash + chr;
             hash |= 0; // Convert to 32bit integer
         }
         return hash.toString();
     }
 
-    static set(hash: string, instance: any) {
+    public static set(hash: string, instance: any): void {
         if (Registry.registry.has(hash)) {
             throw new Error(`"${hash}" already in registry!`);
         }
@@ -54,7 +53,7 @@ class Registry {
         Registry.registry.set(hash, instance);
     }
 
-    static get(hash: string) {
+    public static get(hash: string): any {
         return Registry.registry.get(hash);
     }
 }

@@ -5,11 +5,12 @@
     "main": "build/injectable.js",
     "scripts": {
         "start": "node .",
-        "build": "tsc",
+        "build": "rimraf build && tsc",
         "build:start": "npm run build && npm run start"
     },
     "license": "ISC",
     "devDependencies": {
+        "rimraf": "^3.0.2",
         "tslint": "^6.1.2",
         "tslint-config-prettier": "^1.18.0",
         "typescript": "^3.8.3"
