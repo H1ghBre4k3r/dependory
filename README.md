@@ -60,3 +60,25 @@ export class MyClass {
 ```
 
 The framework will create singletons of both classes, and inject the singleton of `OtherClass` into the constructor of `MyClass` during its creation. To make use of this in an existing project, just refactor all classes to use the decorators and point `node` to your entry-file, the framework will create everything for you.
+
+### Custom Registry
+
+If you want to use a custom registry (not the default one), you can specify it in the decorator:
+
+```ts
+import { Injectable, Registry } from "dependory";
+
+const myRegistry = new Registry();
+
+@Injectable({
+    registry: myRegistry
+})
+export class MyClass {
+    private foo: string;
+    constructor() {
+        this.foo = "bar";
+    }
+}
+```
+
+Doing this, this class will be stored in your custom registry and not the the default one. This it also allows you, to scope your injections per module.
