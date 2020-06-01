@@ -30,7 +30,7 @@ export function Injectable(): (clazz: any) => void {
 }
 
 // tslint:disable-next-line: no-unnecessary-class
-class Registry {
+export class Registry {
     private static registry = new Map<string, any>();
 
     /**
