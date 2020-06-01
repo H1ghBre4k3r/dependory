@@ -1,4 +1,4 @@
-# TypeScript Dependency Injection
+# Dependory
 
 A very simple, yet powerful tool to add and integrate `dependency injection` to your TypeScript projects using decorators.
 
@@ -21,12 +21,20 @@ To use TypeScript decorators, you have to enable them in your `tsconfig.json`:
 
 `experimentalDecorators` allows you to use decorators in your TypeScript code and `emitDecoratorMetadata` allows the framework to get the metadata needed for dependency injection (like types) during runtime.
 
+## Installation
+
+Simply install this package over npm:
+
+```sh
+$ npm i dependory
+```
+
 ## Usage
 
 To make use of the provided features of dependency injection, just add the decorator `@Injectable()` to a class:
 
 ```ts
-import { Injectable } from "typescript-depency-injection";
+import { Injectable } from "dependory";
 
 @Injectable()
 export class OtherClass {
@@ -40,7 +48,7 @@ export class OtherClass {
 In another class, where you want to inject `OtherClass`, to the same:
 
 ```ts
-import { Injectable } from "typescript-depency-injection";
+import { Injectable } from "dependory";
 import { OtherClass } from "./otherClass";
 
 @Injectable()

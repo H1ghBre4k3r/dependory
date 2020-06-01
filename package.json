@@ -8,7 +8,7 @@
         "build": "rimraf build && tsc",
         "build:start": "npm run build && npm run start"
     },
-    "license": "ISC",
+    "license": "MIT",
     "devDependencies": {
         "rimraf": "^3.0.2",
         "tslint": "^6.1.2",
@@ -20,16 +20,16 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://git.bre4k3r.de/h1ghbre4k3r/typescript-dependency-injection"
+        "url": "https://git.bre4k3r.de/h1ghbre4k3r/dependory"
     },
     "author": {
         "email": "h1ghbre4k3r@dev.bre4k3r.de",
         "name": "H1ghBre4k3r",
         "url": "https://twitter.com/h1ghbre4k3r"
     },
-    "homepage": "https://git.bre4k3r.de/h1ghbre4k3r/typescript-dependency-injection",
+    "homepage": "https://git.bre4k3r.de/h1ghbre4k3r/dependory",
     "bugs": {
-        "url": "https://git.bre4k3r.de/h1ghbre4k3r/typescript-dependency-injection/-/issues",
+        "url": "https://git.bre4k3r.de/h1ghbre4k3r/dependory/-/issues",
         "email": "h1ghbre4k3r@dev.bre4k3r.de"
     }
 }
