@@ -1,4 +1,4 @@
 test
 .prettierrc
 tsconfig.json
-tsling.json
+tslint.json
