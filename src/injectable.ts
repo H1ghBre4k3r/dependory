@@ -27,7 +27,7 @@ export class Registry {
      * @param object object to generate the hash for
      */
     public static getHash(object: { toString(): string }): string {
-        const str = object.toString();
+        const str = typeof object + object.toString();
         let hash = 0;
         for (let i = 0; i < str.length; i++) {
             const chr = str.charCodeAt(i);
@@ -77,23 +77,23 @@ export function Injectable(options?: InjectableOptions): (clazz: any) => void {
     const registry = options?.registry ?? defaultRegistry;
 
     return function(clazz: any): void {
-        if (!clazz) {
+        if (!clazz || !Registry.isClass(clazz)) {
             throw new Error(`Argument must be of type class`);
         }
         // Get constructor arguments
         const args = Reflect.getMetadata("design:paramtypes", clazz);
 
         // Fetch all new arguments out of the registry
-        const newArgs = args.map((arg: any) => {
-            const hash = Registry.getHash(arg);
-            let param;
-            // Wait, until all depencies are resolved
-            while (!param) {
-                param = registry.get(hash);
-            }
-            return param;
-        });
-
+        const newArgs =
+            args?.map((arg: any) => {
+                const hash = Registry.getHash(arg);
+                let param;
+                // Wait, until all depencies are resolved
+                while (!param) {
+                    param = registry.get(hash);
+                }
+                return param;
+            }) ?? [];
         // Instantiate object and register it in the registry
         const hash = Registry.getHash(clazz);
         const instance = new clazz(...newArgs);
