@@ -36,5 +36,13 @@
     "bugs": {
         "url": "https://git.bre4k3r.de/h1ghbre4k3r/dependory/-/issues",
         "email": "h1ghbre4k3r@dev.bre4k3r.de"
-    }
+    },
+    "keywords": [
+        "typescript",
+        "decorators",
+        "dependency injection",
+        "di",
+        "dependency",
+        "injection"
+    ]
 }
