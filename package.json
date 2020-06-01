@@ -1,5 +1,5 @@
 {
-    "name": "typescript-dependency-injection",
+    "name": "dependory",
     "version": "0.5.0",
     "description": "A simple, yet powerful framework to add dependency injection to your TypeScript project.",
     "main": "build/injectable.js",
@@ -17,6 +17,10 @@
     },
     "dependencies": {
         "reflect-metadata": "^0.1.13"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://git.bre4k3r.de/h1ghbre4k3r/typescript-dependency-injection"
     },
     "author": {
         "email": "h1ghbre4k3r@dev.bre4k3r.de",
