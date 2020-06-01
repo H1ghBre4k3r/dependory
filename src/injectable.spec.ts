@@ -7,7 +7,7 @@ describe("registry", () => {
             assert.strictEqual(Registry.isClass({}), false);
         });
 
-        it("shoukd return false for primitive data type", () => {
+        it("should return false for primitive data type", () => {
             assert.strictEqual(Registry.isClass(1), false);
             assert.strictEqual(Registry.isClass("a"), false);
             assert.strictEqual(Registry.isClass(2.01), false);
