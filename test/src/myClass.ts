@@ -1,4 +1,4 @@
-import { Injectable } from "../injectable";
+import { Injectable } from "dependory";
 import { OtherClass } from "./otherClass";
 
 @Injectable()
