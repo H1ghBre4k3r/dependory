@@ -6,7 +6,8 @@
     "scripts": {
         "start": "node .",
         "build": "rimraf build && tsc",
-        "build:start": "npm run build && npm run start"
+        "build:start": "npm run build && npm run start",
+        "test": "echo 'test'"
     },
     "license": "MIT",
     "devDependencies": {
