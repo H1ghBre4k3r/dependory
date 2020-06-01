@@ -1,4 +1,5 @@
 test
+*.spec.*
 .prettierrc
 tsconfig.json
 tslint.json
