@@ -11,17 +11,19 @@ interface InjectableOptions {
     registry?: Registry;
 }
 
-/**
- * Default registry to use, if no specific registry is provided.
- */
-const defaultRegistry = new Registry();
+const defaultOptions: InjectableOptions = {
+    registry: new Registry()
+};
 
 /**
  * Make a class injectable.
  * @param options options for the injection
  */
-export function Injectable(options?: InjectableOptions): (clazz: any) => void {
-    const registry = options?.registry ?? defaultRegistry;
+export function Injectable(options: InjectableOptions = {}): (clazz: any) => void {
+    // tslint:disable-next-line: forin
+    for (const t in defaultOptions) {
+        (options as any)[t] = (options as any)[t] ?? (defaultOptions as any)[t];
+    }
 
     return function(clazz: any): void {
         if (!clazz || !Registry.isClass(clazz)) {
@@ -37,13 +39,13 @@ export function Injectable(options?: InjectableOptions): (clazz: any) => void {
                 let param;
                 // Wait, until all depencies are resolved
                 while (!param) {
-                    param = registry.get(hash);
+                    param = options.registry?.get(hash);
                 }
                 return param;
             }) ?? [];
         // Instantiate object and register it in the registry
         const hash = Registry.getHash(clazz);
         const instance = new clazz(...newArgs);
-        registry.set(hash, instance);
+        options.registry?.set(hash, instance);
     };
 }

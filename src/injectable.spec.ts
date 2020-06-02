@@ -34,11 +34,9 @@ describe("@Injectable()", () => {
         const valueToCheck = "bar";
 
         @decorator
-        // tslint:disable-next-line: no-unnecessary-class
         class MyTestClass {
             public foo = valueToCheck;
         }
-        // decorator(MyTestClass);
 
         @decorator
         class MyOtherTestClass {
