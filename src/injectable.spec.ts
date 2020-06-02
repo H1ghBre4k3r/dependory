@@ -61,4 +61,21 @@ describe("@Injectable()", () => {
         const instance = registry.get(hash);
         assert.strictEqual(instance.testClass.foo, valueToCheck);
     });
+
+    it("should inject different instances of the same stored class into the constructor", () => {
+        const registry = new Registry();
+        const decorator = Injectable({ registry, singleton: false });
+
+        @decorator
+        // tslint:disable-next-line: no-unnecessary-class
+        class MyTestClass {}
+
+        @decorator
+        // tslint:disable-next-line: no-unnecessary-class
+        class Test {
+            constructor(a: MyTestClass, b: MyTestClass) {
+                assert.notStrictEqual(a, b);
+            }
+        }
+    });
 });

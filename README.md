@@ -82,3 +82,31 @@ export class MyClass {
 ```
 
 Doing this, this class will be stored in your custom registry and not the the default one. This it also allows you, to scope your injections per module.
+
+### Non-Singletons
+
+If you want to inject classes as non-singletons, so a new instance gets created upon each injection, you can specify it in the options aswell.
+
+```ts
+import { Injectable } from "dependory";
+
+const myRegistry = new Registry();
+
+@Injectable({
+    singleton: false
+})
+export class MyClass {
+    private foo: string;
+    constructor() {
+        this.foo = "bar";
+    }
+}
+
+@Injectable()
+class Test {
+    // 2 different instances get injected
+    constructor(a: MyClass, b: MyClass) {
+        console.log(a === b); // false
+    }
+}
+```
