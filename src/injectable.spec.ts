@@ -27,6 +27,17 @@ describe("@Injectable()", () => {
         assert.strictEqual(registry.get(hash) instanceof MyTestClass, true);
     });
 
+    it("should add a class to the registry", () => {
+        const registry = new Registry();
+        const decorator = Injectable({ registry, singleton: false });
+
+        @decorator
+        // tslint:disable-next-line: no-unnecessary-class
+        class MyTestClass {}
+        const hash = Registry.getHash(MyTestClass);
+        assert.strictEqual(registry.get(hash) instanceof MyTestClass, true);
+    });
+
     it("should inject the dependency to the constructor", () => {
         const registry = new Registry();
         const decorator = Injectable({ registry });

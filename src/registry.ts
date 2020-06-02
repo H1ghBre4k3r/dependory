@@ -1,3 +1,8 @@
+export interface ClazzObject {
+    clazz: any;
+    args: any[];
+}
+
 /**
  * Registry for managing the injections.
  */
@@ -28,19 +33,35 @@ export class Registry {
     /**
      * Map for storing singletons.
      */
-    private registry = new Map<string, any>();
+    private singletonRegistry = new Map<string, any>();
 
     /**
-     * Add a value to the registry.
+     * Map for storing classes.
+     */
+    private classRegistry = new Map<string, ClazzObject>();
+
+    /**
+     * Add a singleton to the registry.
      * @param hash hash of the value to add
      * @param instance instance to add to the registry
      */
-    public set(hash: string, instance: any): void {
-        if (this.registry.has(hash)) {
+    public addSingleton(hash: string, instance: any): void {
+        if (this.singletonRegistry.has(hash)) {
             throw new Error(`"${hash}" already in registry!`);
         }
+        this.singletonRegistry.set(hash, instance);
+    }
 
-        this.registry.set(hash, instance);
+    /**
+     * Add a class to the registry. A new instance will be generated everytime, it shall get injected.
+     * @param hash hash of the class to add
+     * @param clazz class to add the the registry
+     */
+    public addClass(hash: string, clazz: ClazzObject): void {
+        if (this.classRegistry.has(hash)) {
+            throw new Error(`"${hash}" already in registry!`);
+        }
+        this.classRegistry.set(hash, clazz);
     }
 
     /**
@@ -48,6 +69,17 @@ export class Registry {
      * @param hash hash to get the stored value for
      */
     public get(hash: string): any {
-        return this.registry.get(hash);
+        let toReturn;
+        const singleton = this.singletonRegistry.get(hash);
+        if (singleton) {
+            toReturn = singleton;
+        } else {
+            // If there is no singleton stored, get the stored class, instanciate and return it
+            const opt = this.classRegistry.get(hash);
+            if (opt) {
+                toReturn = new opt.clazz(...opt.args);
+            }
+        }
+        return toReturn;
     }
 }

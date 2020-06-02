@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Registry } from "./registry";
+import { Registry, ClazzObject } from "./registry";
 
 /**
  * Options for an injection.
@@ -9,10 +9,15 @@ interface InjectableOptions {
      * Registry for injecting and storing classes. Of none is provided, the default one will be used.
      */
     registry?: Registry;
+    /**
+     * If this class shall be injected as a singleton. Default: `true`
+     */
+    singleton?: boolean;
 }
 
 const defaultOptions: InjectableOptions = {
-    registry: new Registry()
+    registry: new Registry(),
+    singleton: true
 };
 
 /**
@@ -45,7 +50,15 @@ export function Injectable(options: InjectableOptions = {}): (clazz: any) => voi
             }) ?? [];
         // Instantiate object and register it in the registry
         const hash = Registry.getHash(clazz);
-        const instance = new clazz(...newArgs);
-        options.registry?.set(hash, instance);
+        if (options.singleton) {
+            const instance = new clazz(...newArgs);
+            options.registry?.addSingleton(hash, instance);
+        } else {
+            const opt: ClazzObject = {
+                clazz,
+                args: newArgs
+            };
+            options.registry?.addClass(hash, opt);
+        }
     };
 }

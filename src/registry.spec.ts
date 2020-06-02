@@ -1,5 +1,5 @@
 import assert from "assert";
-import { Registry } from "./registry";
+import { Registry, ClazzObject } from "./registry";
 
 describe("Registry", () => {
     describe("isClass()", () => {
@@ -51,15 +51,15 @@ describe("Registry", () => {
         });
     });
 
-    describe("set()", () => {
+    describe("addSingleton()", () => {
         // tslint:disable-next-line: no-unnecessary-class
         class MyTestClass {}
 
-        it("should add a class to the registry", () => {
+        it("should add a singleton to the registry", () => {
             const registry = new Registry();
             const hash = Registry.getHash(MyTestClass);
             const instance = new MyTestClass();
-            registry.set(hash, instance);
+            registry.addSingleton(hash, instance);
             assert.deepStrictEqual(registry.get(hash), instance);
         });
 
@@ -67,8 +67,47 @@ describe("Registry", () => {
             const registry = new Registry();
             const hash = Registry.getHash(MyTestClass);
             const instance = new MyTestClass();
-            registry.set(hash, instance);
-            assert.throws(() => registry.set(hash, instance));
+            registry.addSingleton(hash, instance as any);
+            assert.throws(() => registry.addSingleton(hash, instance));
+        });
+    });
+
+    describe("addClass()", () => {
+        // tslint:disable-next-line: no-unnecessary-class
+        class MyTestClass {}
+
+        it("should add a class to the registry", () => {
+            const registry = new Registry();
+
+            const hash = Registry.getHash(MyTestClass);
+            const opt: ClazzObject = {
+                clazz: MyTestClass,
+                args: []
+            };
+            registry.addClass(hash, opt);
+            assert.notStrictEqual(registry.get(hash), undefined);
+        });
+
+        it("should throw error when hash already exists", () => {
+            const registry = new Registry();
+            const hash = Registry.getHash(MyTestClass);
+            const opt: ClazzObject = {
+                clazz: MyTestClass,
+                args: []
+            };
+            registry.addClass(hash, opt);
+            assert.throws(() => registry.addClass(hash, opt));
+        });
+
+        it("should generate new instances for non singletons", () => {
+            const registry = new Registry();
+
+            const hash = Registry.getHash(MyTestClass);
+
+            registry.addClass(hash, { clazz: MyTestClass, args: [] });
+            const c1 = registry.get(hash);
+            const c2 = registry.get(hash);
+            assert.notStrictEqual(c1, c2);
         });
     });
 
@@ -79,7 +118,7 @@ describe("Registry", () => {
             const registry = new Registry();
             const hash = Registry.getHash(MyTestClass);
             const instance = new MyTestClass();
-            registry.set(hash, instance);
+            registry.addSingleton(hash, instance);
             assert.deepStrictEqual(registry.get(hash), instance);
         });
 
