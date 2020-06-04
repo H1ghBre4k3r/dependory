@@ -9,5 +9,10 @@ coverage
 tsconfig.json
 tslint.json
 
+## Git stuff
+.gitlab-ci.yml
+CHANGELOG.md
+CONTRIBUTING.md
+
 ## npm stuff
 *.tgz
