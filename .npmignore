@@ -1,5 +1,13 @@
+## Test stuff
 test
 *.spec.*
+.nyc*
+coverage
+
+## Editor and ts stuff
 .prettierrc
 tsconfig.json
 tslint.json
+
+## npm stuff
+*.tgz

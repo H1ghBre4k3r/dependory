@@ -1,4 +1,12 @@
+## NPM stuff
 node_modules
+*.tgz
+
+## TypeScript stuff
 build
 .env
 config
+
+## Test-Stuff
+.nyc*
+coverage
