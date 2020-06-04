@@ -44,7 +44,7 @@ lint:
 test:
     stage: test
     script:
-        - npm run test
+        - npm run coverage
     cache:
         key: $CI_COMMIT_REF_SLUG
         paths:
