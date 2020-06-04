@@ -41,11 +41,7 @@ export function Injectable(options: InjectableOptions = {}): (clazz: any) => voi
         const newArgs =
             args?.map((arg: any) => {
                 const hash = Registry.getHash(arg);
-                let param;
-                // Wait, until all depencies are resolved
-                while (!param) {
-                    param = options.registry?.get(hash);
-                }
+                const param = options.registry?.get(hash);
                 return param;
             }) ?? [];
         // Instantiate object and register it in the registry

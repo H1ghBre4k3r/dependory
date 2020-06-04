@@ -1,6 +1,6 @@
 {
     "name": "dependory",
-    "version": "0.6.2",
+    "version": "0.6.3",
     "description": "A simple, yet powerful framework to add dependency injection to your TypeScript project.",
     "main": "build/index.js",
     "scripts": {
@@ -9,7 +9,7 @@
         "build:start": "npm run build && npm run start",
         "lint": "tslint -p .",
         "test": "mocha build/**/*.spec.js",
-        "coverage": "nyc --reporter=lcov --reporter=text --reporter=text-summary npm test"
+        "coverage": "nyc npm test"
     },
     "license": "MIT",
     "devDependencies": {
@@ -41,7 +41,12 @@
         "email": "h1ghbre4k3r@dev.bre4k3r.de"
     },
     "nyc": {
-        "exclude": "**/*.spec.js"
+        "exclude": "**/*.spec.js",
+        "reporter": [
+            "lcov",
+            "text",
+            "text-summary"
+        ]
     },
     "keywords": [
         "typescript",
