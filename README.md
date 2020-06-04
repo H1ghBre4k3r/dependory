@@ -1,5 +1,7 @@
 # Dependory
 
+[![pipeline status](https://git.bre4k3r.de/h1ghbre4k3r/dependory/badges/master/pipeline.svg)](https://git.bre4k3r.de/h1ghbre4k3r/dependory/-/commits/master) [![coverage report](https://git.bre4k3r.de/h1ghbre4k3r/dependory/badges/master/coverage.svg)](https://git.bre4k3r.de/h1ghbre4k3r/dependory/-/commits/master)
+
 A very simple, yet powerful tool to add and integrate `dependency injection` to your TypeScript projects using decorators.
 
 ## Prerequisites
