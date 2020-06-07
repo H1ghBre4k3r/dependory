@@ -83,3 +83,7 @@ export class Registry {
         return toReturn;
     }
 }
+
+const defaultRegistry = new Registry();
+
+export { defaultRegistry };

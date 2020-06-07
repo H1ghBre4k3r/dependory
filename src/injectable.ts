@@ -1,5 +1,6 @@
 import "reflect-metadata";
-import { Registry, ClazzObject } from "./registry";
+import { Clazz } from "./clazz";
+import { Registry, ClazzObject, defaultRegistry } from "./registry";
 
 /**
  * Options for an injection.
@@ -16,7 +17,7 @@ interface InjectableOptions {
 }
 
 const defaultOptions: InjectableOptions = {
-    registry: new Registry(),
+    registry: defaultRegistry,
     singleton: true
 };
 
@@ -30,7 +31,7 @@ export function Injectable(options: InjectableOptions = {}): (clazz: any) => voi
         (options as any)[t] = (options as any)[t] ?? (defaultOptions as any)[t];
     }
 
-    return function(clazz: any): void {
+    return function<T extends Clazz<any>>(clazz: T): void {
         if (!clazz || !Registry.isClass(clazz)) {
             throw new Error(`Argument must be of type class`);
         }
