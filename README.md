@@ -112,3 +112,35 @@ class Test {
     }
 }
 ```
+
+### Inject class properties
+
+If you only want to inject certain properties of a class, you can apply the `@Inject()` decorator to this properties.
+
+`@Inject()` takes an optional parameter, which current allows you to specify the registry, from which the value to inject shall be taken from.
+
+```ts
+import { Injectable, Inject, Registry } from "dependory";
+
+// Create an own registry for scoping our injections
+const myRegistry = new Registry();
+
+@Injectable({
+    registry: myRegistry
+})
+class MyTestClass {
+    public foo = "bar";
+}
+
+class MyClass {
+    @Inject({
+        registry: myRegistry
+    })
+    public test: MyTestClass;
+}
+
+const myInstance = new MyClass();
+console.log(myInstance.test.foo); // "bar"
+```
+
+If `registry` is not provided, it will default to the general library, which gets used by the framework by default.
