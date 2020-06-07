@@ -41,7 +41,11 @@
         "email": "h1ghbre4k3r@dev.bre4k3r.de"
     },
     "nyc": {
-        "exclude": "**/*.spec.js",
+        "all": true,
+        "exclude": [
+            "**/*.spec.js",
+            "coverage/**/*"
+        ],
         "reporter": [
             "lcov",
             "text",
