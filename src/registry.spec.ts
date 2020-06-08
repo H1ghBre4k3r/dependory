@@ -84,7 +84,7 @@ describe("Registry", () => {
                 clazz: MyTestClass,
                 args: []
             };
-            registry.addClass(hash, opt);
+            registry.addTransient(hash, opt);
             assert.notStrictEqual(registry.get(hash), undefined);
         });
 
@@ -95,8 +95,8 @@ describe("Registry", () => {
                 clazz: MyTestClass,
                 args: []
             };
-            registry.addClass(hash, opt);
-            assert.throws(() => registry.addClass(hash, opt));
+            registry.addTransient(hash, opt);
+            assert.throws(() => registry.addTransient(hash, opt));
         });
 
         it("should generate new instances for non singletons", () => {
@@ -104,7 +104,7 @@ describe("Registry", () => {
 
             const hash = Registry.getHash(MyTestClass);
 
-            registry.addClass(hash, { clazz: MyTestClass, args: [] });
+            registry.addTransient(hash, { clazz: MyTestClass, args: [] });
             const c1 = registry.get(hash);
             const c2 = registry.get(hash);
             assert.notStrictEqual(c1, c2);

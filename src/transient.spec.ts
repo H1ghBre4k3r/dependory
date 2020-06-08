@@ -1,12 +1,10 @@
-// tslint:disable: deprecation
-// @deprecated
 import assert from "assert";
-import { Injectable } from "./injectable";
 import { Registry } from "./registry";
+import { Transient } from "./transient";
 
-describe("@Injectable()", () => {
+describe("@Transient()", () => {
     it("throws error on non class argument", () => {
-        const decorator = Injectable();
+        const decorator = Transient();
         assert.throws(() => (decorator as any)(1));
         assert.throws(() => (decorator as any)("2"));
         assert.throws(() =>
@@ -18,20 +16,9 @@ describe("@Injectable()", () => {
         assert.throws(() => (decorator as any)(NaN));
     });
 
-    it("should add singleton to registry", () => {
-        const registry = new Registry();
-        const decorator = Injectable({ registry });
-
-        @decorator
-        // tslint:disable-next-line: no-unnecessary-class
-        class MyTestClass {}
-        const hash = Registry.getHash(MyTestClass);
-        assert.strictEqual(registry.get(hash) instanceof MyTestClass, true);
-    });
-
     it("should add a class to the registry", () => {
         const registry = new Registry();
-        const decorator = Injectable({ registry, singleton: false });
+        const decorator = Transient({ registry });
 
         @decorator
         // tslint:disable-next-line: no-unnecessary-class
@@ -42,7 +29,7 @@ describe("@Injectable()", () => {
 
     it("should inject the dependency to the constructor", () => {
         const registry = new Registry();
-        const decorator = Injectable({ registry });
+        const decorator = Transient({ registry });
 
         const valueToCheck = "bar";
 
@@ -66,7 +53,7 @@ describe("@Injectable()", () => {
 
     it("should inject different instances of the same stored class into the constructor", () => {
         const registry = new Registry();
-        const decorator = Injectable({ registry, singleton: false });
+        const decorator = Transient({ registry });
 
         @decorator
         // tslint:disable-next-line: no-unnecessary-class
