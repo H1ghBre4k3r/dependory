@@ -57,7 +57,7 @@ export class Registry {
      * @param hash hash of the class to add
      * @param clazz class to add the the registry
      */
-    public addClass(hash: string, clazz: ClazzObject): void {
+    public addTransient(hash: string, clazz: ClazzObject): void {
         if (this.classRegistry.has(hash)) {
             throw new Error(`"${hash}" already in registry!`);
         }

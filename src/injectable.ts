@@ -12,6 +12,7 @@ interface InjectableOptions {
     registry?: Registry;
     /**
      * If this class shall be injected as a singleton. Default: `true`
+     * @deprecated
      */
     singleton?: boolean;
 }
@@ -24,14 +25,15 @@ const defaultOptions: InjectableOptions = {
 /**
  * Make a class injectable.
  * @param options options for the injection
+ * @deprecated
  */
-export function Injectable(options: InjectableOptions = {}): (clazz: any) => void {
+export function Injectable(options: InjectableOptions = {}): <T extends Clazz<any>>(clazz: T) => T {
     // tslint:disable-next-line: forin
     for (const t in defaultOptions) {
         (options as any)[t] = (options as any)[t] ?? (defaultOptions as any)[t];
     }
 
-    return function<T extends Clazz<any>>(clazz: T): void {
+    return function<T extends Clazz<any>>(clazz: T): T {
         if (!clazz || !Registry.isClass(clazz)) {
             throw new Error(`Argument must be of type class`);
         }
@@ -47,6 +49,9 @@ export function Injectable(options: InjectableOptions = {}): (clazz: any) => voi
             }) ?? [];
         // Instantiate object and register it in the registry
         const hash = Registry.getHash(clazz);
+
+        // @deprecated
+        // tslint:disable-next-line: deprecation
         if (options.singleton) {
             const instance = new clazz(...newArgs);
             options.registry?.addSingleton(hash, instance);
@@ -55,7 +60,8 @@ export function Injectable(options: InjectableOptions = {}): (clazz: any) => voi
                 clazz,
                 args: newArgs
             };
-            options.registry?.addClass(hash, opt);
+            options.registry?.addTransient(hash, opt);
         }
+        return clazz;
     };
 }

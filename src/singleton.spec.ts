@@ -1,12 +1,11 @@
-// tslint:disable: deprecation
-// @deprecated
+// tslint:disable: no-unnecessary-class
 import assert from "assert";
-import { Injectable } from "./injectable";
 import { Registry } from "./registry";
+import { Singleton } from "./singleton";
 
-describe("@Injectable()", () => {
+describe("@Singleton()", () => {
     it("throws error on non class argument", () => {
-        const decorator = Injectable();
+        const decorator = Singleton();
         assert.throws(() => (decorator as any)(1));
         assert.throws(() => (decorator as any)("2"));
         assert.throws(() =>
@@ -20,29 +19,18 @@ describe("@Injectable()", () => {
 
     it("should add singleton to registry", () => {
         const registry = new Registry();
-        const decorator = Injectable({ registry });
+        const decorator = Singleton({ registry });
 
         @decorator
-        // tslint:disable-next-line: no-unnecessary-class
         class MyTestClass {}
-        const hash = Registry.getHash(MyTestClass);
-        assert.strictEqual(registry.get(hash) instanceof MyTestClass, true);
-    });
 
-    it("should add a class to the registry", () => {
-        const registry = new Registry();
-        const decorator = Injectable({ registry, singleton: false });
-
-        @decorator
-        // tslint:disable-next-line: no-unnecessary-class
-        class MyTestClass {}
         const hash = Registry.getHash(MyTestClass);
         assert.strictEqual(registry.get(hash) instanceof MyTestClass, true);
     });
 
     it("should inject the dependency to the constructor", () => {
         const registry = new Registry();
-        const decorator = Injectable({ registry });
+        const decorator = Singleton({ registry });
 
         const valueToCheck = "bar";
 
@@ -62,22 +50,5 @@ describe("@Injectable()", () => {
         const hash = Registry.getHash(MyOtherTestClass);
         const instance = registry.get(hash);
         assert.strictEqual(instance.testClass.foo, valueToCheck);
-    });
-
-    it("should inject different instances of the same stored class into the constructor", () => {
-        const registry = new Registry();
-        const decorator = Injectable({ registry, singleton: false });
-
-        @decorator
-        // tslint:disable-next-line: no-unnecessary-class
-        class MyTestClass {}
-
-        @decorator
-        // tslint:disable-next-line: no-unnecessary-class
-        class Test {
-            constructor(a: MyTestClass, b: MyTestClass) {
-                assert.notStrictEqual(a, b);
-            }
-        }
     });
 });
