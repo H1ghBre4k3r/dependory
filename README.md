@@ -157,6 +157,43 @@ console.log(myInstance.test.foo); // "bar"
 
 If `registry` is not provided, it will default to the general library, which gets used by the framework by default.
 
+### Inject constructor parameters
+
+If you want to inject concrete parameters from specific registries into the constructor, you can achieve this with `@Inject()` aswell. Just decorate the parameter in the constructor:
+
+```ts
+import { Singleton, Inject, Registry } from "dependory";
+
+const myRegistry = new Registry();
+
+// We chain the decorators, so we create 2 different singletons in 2 different registries
+// See "Decorator-Chaining" for details about this
+@Singleton({
+    registry: myRegistry
+})
+@Singleton()
+class MyTestClass {
+    public foo = Math.random();
+}
+
+// Inject the general constructor parameters from the default registry
+@Singleton()
+class MyClass {
+    constructor(
+        a: MyTestClass,
+        // Inject the second parameter from another registry
+        @Inject({
+            registry: myRegistry
+        })
+        b: MyTestClass
+    ) {
+        console.log(a.foo === b.foo); // false
+    }
+}
+```
+
+Note, that the conretely injected parameters override the parameters, that get automatically injected by the framework!
+
 ### Decorator-Chaining
 
 By default, you can chain the decorators in combination with different registries, to store classes both as singletons and as transients.

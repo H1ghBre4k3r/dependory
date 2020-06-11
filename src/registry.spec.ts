@@ -1,5 +1,8 @@
+// tslint:disable: no-unnecessary-class
 import assert from "assert";
+import { Inject } from "./inject";
 import { Registry, ClazzObject } from "./registry";
+import { Singleton } from "./singleton";
 
 describe("Registry", () => {
     describe("isClass()", () => {
@@ -41,7 +44,6 @@ describe("Registry", () => {
 
     describe("getHash()", () => {
         it("should give the same hash for same values", () => {
-            // tslint:disable-next-line: no-unnecessary-class
             class MyTestClass {}
             assert.strictEqual(Registry.getHash(MyTestClass), Registry.getHash(MyTestClass));
         });
@@ -51,8 +53,47 @@ describe("Registry", () => {
         });
     });
 
+    describe("getClassContructorInjectees()", () => {
+        it("should give an empty object when there are no injectees", () => {
+            class MyTestClass {}
+            assert.deepStrictEqual(Registry.getClassContructorInjectees(MyTestClass), {});
+        });
+    });
+
+    describe("instantiate", () => {
+        it("should return an instance of the given class", () => {
+            class MyClass {}
+            assert.strictEqual(Registry.instantiate(MyClass, []) instanceof MyClass, true);
+        });
+
+        it("should replace params with injectees", () => {
+            const reg = new Registry();
+
+            @Singleton({
+                registry: reg
+            })
+            class A {
+                public foo = Math.random();
+            }
+
+            const testValue = new A();
+
+            class MyTest {
+                constructor(
+                    @Inject({
+                        registry: reg
+                    })
+                    a: A
+                ) {
+                    assert.notStrictEqual(a.foo, testValue.foo);
+                }
+            }
+
+            Registry.instantiate(MyTest, [testValue]);
+        });
+    });
+
     describe("addSingleton()", () => {
-        // tslint:disable-next-line: no-unnecessary-class
         class MyTestClass {}
 
         it("should add a singleton to the registry", () => {
@@ -73,7 +114,6 @@ describe("Registry", () => {
     });
 
     describe("addClass()", () => {
-        // tslint:disable-next-line: no-unnecessary-class
         class MyTestClass {}
 
         it("should add a class to the registry", () => {
@@ -112,7 +152,6 @@ describe("Registry", () => {
     });
 
     describe("get()", () => {
-        // tslint:disable-next-line: no-unnecessary-class
         class MyTestClass {}
         it("should return the value for a specific hash", () => {
             const registry = new Registry();

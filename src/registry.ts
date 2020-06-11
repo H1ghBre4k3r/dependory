@@ -1,12 +1,25 @@
+/**
+ * Interface, which gets stored for transients.
+ */
 export interface ClazzObject {
     clazz: any;
     args: any[];
 }
 
 /**
+ * Interface for the injectees for the constructor.
+ */
+export interface ConstructorParamInjectee {
+    registry: Registry;
+    hash: string;
+}
+
+/**
  * Registry for managing the injections.
  */
 export class Registry {
+    private static CONSTRUCTOR_INJECTION_KEY = "___dependory_injection_key";
+
     /**
      * Check, if a class is actually an ES6 class.
      * @param clazz object, for which to check, if it is an ES6 class
@@ -28,6 +41,35 @@ export class Registry {
             hash |= 0;
         }
         return hash.toString();
+    }
+
+    /**
+     * Get the map for a class, in which its constructor injectees are stored in.
+     * @param clazz class to get the map for
+     */
+    public static getClassContructorInjectees(clazz: any): { [key: string]: ConstructorParamInjectee } {
+        clazz[Registry.CONSTRUCTOR_INJECTION_KEY] = clazz[Registry.CONSTRUCTOR_INJECTION_KEY] || {};
+        return clazz[Registry.CONSTRUCTOR_INJECTION_KEY];
+    }
+
+    /**
+     * Instantiate a class with the given arguments and check, if there any injectees and favor them before the actual arguments.
+     * @param clazz class to instantiate
+     * @param args constructor arguments
+     */
+    public static instantiate(clazz: any, args: any[]): any {
+        // Get injectees
+        const constructorParamInjectees = Registry.getClassContructorInjectees(clazz);
+
+        // Replace arguments with injectees, if needed
+        Object.keys(constructorParamInjectees).forEach(paramIndex => {
+            const index = parseInt(paramIndex, 10);
+            const injectee = constructorParamInjectees[paramIndex];
+            const value = injectee.registry.get(injectee.hash);
+            args[index] = value;
+        });
+        // Return the instantiated class
+        return new clazz(...args);
     }
 
     /**
@@ -77,7 +119,7 @@ export class Registry {
             // If there is no singleton stored, get the stored class, instanciate and return it
             const opt = this.classRegistry.get(hash);
             if (opt) {
-                toReturn = new opt.clazz(...opt.args);
+                toReturn = Registry.instantiate(opt.clazz, opt.args); // new opt.clazz(...opt.args);
             }
         }
         return toReturn;
