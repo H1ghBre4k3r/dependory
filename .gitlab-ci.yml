@@ -4,6 +4,7 @@ stages:
     - setup
     - build
     - test
+    - deploy
 
 node:install:
     stage: setup
@@ -30,6 +31,7 @@ build:
     artifacts:
         paths:
             - build/
+        expire_in: 1 hour
 
 lint:
     stage: test
@@ -51,3 +53,18 @@ test:
             - node_modules/
         policy: pull-push
     coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+
+bundle:
+    stage: deploy
+    script:
+        - npm run bundle
+        - npm pack
+    cache:
+        key: $CI_COMMIT_REF_SLUG
+        paths:
+            - node_modules/
+        policy: pull-push
+    artifacts:
+        paths:
+            - "*.tgz"
+        expire_in: 1 week

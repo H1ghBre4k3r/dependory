@@ -16,3 +16,8 @@ CONTRIBUTING.md
 
 ## npm stuff
 *.tgz
+
+## source code
+src
+webpack.*
+*.map
