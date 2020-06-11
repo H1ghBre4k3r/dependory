@@ -41,7 +41,7 @@ export function Singleton(options: SingletonOptions = {}): <T extends Clazz<any>
             }) ?? [];
         // Instantiate object and register it in the registry
         const hash = Registry.getHash(clazz);
-        const instance = new clazz(...newArgs);
+        const instance = Registry.instantiate(clazz, newArgs); // new clazz(...newArgs);
         options.registry?.addSingleton(hash, instance);
 
         // Return class, for chaining decorators

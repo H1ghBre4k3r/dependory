@@ -26,20 +26,36 @@ export function Inject(options: InjectOptions = {}): any {
         (options as any)[t] = (options as any)[t] ?? (defaultOptions as any)[t];
     }
 
-    return function(object: object, prop: any): any {
-        // Get type and hash of parameter
-        const type = Reflect.getMetadata("design:type", object, prop);
-        const hash = Registry.getHash(type);
-        // Get the value
-        const value = options.registry?.get(hash);
+    return function(object: object, prop: any, paramIndex?: number): any {
+        if (paramIndex !== undefined) {
+            // Parameter injection
 
-        // Assign value to variable
-        Object.defineProperty(object, prop, {
-            writable: true,
-            value,
-            enumerable: true,
-            configurable: true
-        });
+            // Get type and hash
+            const type = Reflect.getMetadata("design:paramtypes", object)[paramIndex];
+            const hash = Registry.getHash(type);
+
+            // Store index and hash in map for object
+            const injectionMap = Registry.getClassContructorInjectees(object);
+            injectionMap[paramIndex] = {
+                registry: options.registry as Registry,
+                hash
+            };
+        } else {
+            // Property injection
+            // Get type and hash of parameter
+            const type = Reflect.getMetadata("design:type", object, prop);
+            const hash = Registry.getHash(type);
+            // Get the value
+            const value = options.registry?.get(hash);
+
+            // Assign value to variable
+            Object.defineProperty(object, prop, {
+                writable: true,
+                value,
+                enumerable: true,
+                configurable: true
+            });
+        }
     };
 }
 

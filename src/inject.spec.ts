@@ -1,13 +1,13 @@
+// tslint:disable: no-unnecessary-class
 import assert from "assert";
 import { Inject } from "./inject";
-import { Injectable } from "./injectable";
 import { Registry } from "./registry";
+import { Singleton } from "./singleton";
 
 describe("@Inject()", () => {
     it("should inject the value from the registry", () => {
         const registry = new Registry();
-        @Injectable({ registry })
-        // tslint:disable-next-line: no-unnecessary-class
+        @Singleton({ registry })
         class A {}
 
         class Test {
@@ -25,14 +25,12 @@ describe("@Inject()", () => {
         const rA = new Registry();
         const rB = new Registry();
 
-        @Injectable({ registry: rB })
-        // tslint:disable-next-line: no-unnecessary-class
+        @Singleton({ registry: rB })
         class A {}
 
-        @Injectable({
+        @Singleton({
             registry: rA
         })
-        // tslint:disable-next-line: no-unnecessary-class
         class B {}
 
         class Test {
@@ -46,5 +44,24 @@ describe("@Inject()", () => {
         const instance = new Test();
         assert.strictEqual(instance.a, undefined);
         assert.strictEqual(instance.b, undefined);
+    });
+
+    it("should add a parameter injectee with the provided registry to the injectee map", () => {
+        const reg = new Registry();
+        @Singleton({ registry: reg })
+        class A {}
+
+        class Test {
+            constructor(@Inject({ registry: reg }) a: A) {
+                //
+            }
+        }
+
+        const hash = Registry.getHash(A);
+
+        const injectees = Registry.getClassContructorInjectees(Test);
+        assert.strictEqual(Object.keys(injectees).length, 1);
+        assert.strictEqual(injectees[0].registry, reg);
+        assert.strictEqual(injectees[0].hash, hash);
     });
 });
