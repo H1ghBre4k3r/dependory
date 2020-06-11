@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 export * from "./registry";
 export * from "./injectable";
 export * from "./singleton";

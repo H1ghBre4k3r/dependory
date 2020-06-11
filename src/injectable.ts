@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import { Clazz } from "./clazz";
 import { Registry, ClazzObject, defaultRegistry } from "./registry";
 
