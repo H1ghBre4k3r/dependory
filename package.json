@@ -1,27 +1,33 @@
 {
     "name": "dependory",
-    "version": "0.7.1",
+    "version": "0.7.2",
     "description": "A simple, yet powerful framework to add dependency injection to your TypeScript project.",
     "main": "build/index.js",
     "scripts": {
         "start": "node .",
         "build": "rimraf build && tsc",
-        "build:start": "npm run build && npm run start",
+        "bundle": "rimraf build && webpack",
         "lint": "tslint -p .",
         "test": "mocha build/**/*.spec.js",
-        "coverage": "nyc npm test"
+        "coverage": "nyc npm test",
+        "release": "npm run bundle && npm publish"
     },
     "license": "MIT",
     "devDependencies": {
         "@types/mocha": "^7.0.2",
         "@types/node": "^14.0.10",
         "coveralls": "^3.1.0",
+        "dts-bundle-webpack": "^1.0.2",
         "mocha": "^7.2.0",
         "nyc": "^15.1.0",
         "rimraf": "^3.0.2",
+        "ts-loader": "^7.0.5",
         "tslint": "^6.1.2",
         "tslint-config-prettier": "^1.18.0",
-        "typescript": "^3.9.3"
+        "typescript": "^3.9.3",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.11",
+        "webpack-node-externals": "^1.7.2"
     },
     "dependencies": {
         "reflect-metadata": "^0.1.13"
@@ -44,7 +50,8 @@
         "all": true,
         "exclude": [
             "**/*.spec.js",
-            "coverage/**/*"
+            "coverage/**/*",
+            "webpack.config.js"
         ],
         "reporter": [
             "lcov",
