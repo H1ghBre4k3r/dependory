@@ -1,7 +1,10 @@
 # Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the owners of this repository before making a change.
+email, or any other method with the owners of this repository before making a change. The issues
+and pull-/merge-requests of this project are getting managed on [a different platform (private Gitlab)](https://git.bre4k3r.de/h1ghbre4k3r/dependory),
+since there the entire CI is integrated. If you want to contribute, please register there and
+start a discussion in the projects' issues.
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
