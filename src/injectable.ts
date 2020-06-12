@@ -52,7 +52,7 @@ export function Injectable(options: InjectableOptions = {}): <T extends Clazz<an
         // @deprecated
         // tslint:disable-next-line: deprecation
         if (options.singleton) {
-            const instance = new clazz(...newArgs);
+            const instance = Registry.instantiate(clazz, newArgs);
             options.registry?.addSingleton(hash, instance);
         } else {
             const opt: ClazzObject = {
