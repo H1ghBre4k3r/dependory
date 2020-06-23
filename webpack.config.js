@@ -5,6 +5,7 @@ const nodeExternals = require("webpack-node-externals");
 module.exports = {
     entry: "./src/index.ts",
     target: "node",
+    mode: "production",
     externals: [nodeExternals()],
     module: {
         rules: [
@@ -20,7 +21,9 @@ module.exports = {
     },
     output: {
         filename: "index.js",
-        path: path.resolve(__dirname, "build")
+        path: path.resolve(__dirname, "build"),
+        library: "",
+        libraryTarget: "commonjs-module"
     },
     plugins: [
         new DtsBundleWebpack({
