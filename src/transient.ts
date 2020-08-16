@@ -9,6 +9,11 @@ interface TransientOptions {
      * Registry for injecting and storing this transient.
      */
     registry?: Registry;
+    /**
+     * Key for injecting this Transient. This overrides the actual
+     * value, by which this transient would be injected.
+     */
+    key?: string;
 }
 
 const defaultOptions: TransientOptions = {
@@ -40,8 +45,8 @@ export function Transient(options: TransientOptions = {}): <T extends Clazz<any>
                 const param = options.registry?.get(hash);
                 return param;
             }) ?? [];
-        // Generate hash and store class and arguments in object
-        const hash = Registry.getHash(clazz);
+        // Use key or generate hash and store class and arguments in object
+        const hash = options.key ?? Registry.getHash(clazz);
         const opt: ClazzObject = {
             clazz,
             args: newArgs

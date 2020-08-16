@@ -10,6 +10,11 @@ export interface InjectOptions {
      * Defaults to the general default registry.
      */
     registry?: Registry;
+    /**
+     * Key for finding a property to inject.
+     * This overrides the actual type of the injectee.
+     */
+    key?: string;
 }
 
 const defaultOptions: InjectOptions = {
@@ -32,7 +37,7 @@ export function Inject(options: InjectOptions = {}): any {
 
             // Get type and hash
             const type = Reflect.getMetadata("design:paramtypes", object)[paramIndex];
-            const hash = Registry.getHash(type);
+            const hash = options.key ?? Registry.getHash(type);
 
             // Store index and hash in map for object
             const injectionMap = Registry.getClassContructorInjectees(object);
@@ -44,7 +49,7 @@ export function Inject(options: InjectOptions = {}): any {
             // Property injection
             // Get type and hash of parameter
             const type = Reflect.getMetadata("design:type", object, prop);
-            const hash = Registry.getHash(type);
+            const hash = options.key ?? Registry.getHash(type);
             // Get the value
             const value = options.registry?.get(hash);
 
