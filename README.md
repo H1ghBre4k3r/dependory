@@ -91,7 +91,7 @@ class Test {
 }
 ```
 
-Note, that the injection in the constructor of the decorated classes will still happen.
+**Note**: The injection in the constructor of the decorated classes will still happen.
 
 ### Custom Registry
 
@@ -192,7 +192,30 @@ class MyClass {
 }
 ```
 
-Note, that the conretely injected parameters override the parameters, that get automatically injected by the framework!
+**Note:** The concretely injected parameters override the parameters, that get automatically injected by the framework!
+
+### Inject via custom key
+
+If you want to register and inject properties or parameters via custom keys, you can specify them in via the injection properties:
+
+```ts
+@Singleton({
+    key: "myInjectionKey"
+})
+class MyClass {
+    //
+}
+
+@Singleton()
+class MyOtherClass {
+    @Inject({
+        key: "myInjectionKey"
+    })
+    private value: any;
+}
+```
+
+**Note:** The custom key will _always_ overwrite the class hash (the default value for a class to be injected with).
 
 ### Decorator-Chaining
 

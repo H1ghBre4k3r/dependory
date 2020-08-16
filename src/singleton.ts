@@ -9,6 +9,11 @@ interface SingletonOptions {
      * Registry to use for storing the Singleton. Defaults to the registry used by the framework.
      */
     registry?: Registry;
+    /**
+     * Key for injecting this singleton. This overrides the actual
+     * value, by which this singleton would be injected.
+     */
+    key?: string;
 }
 
 const defaultOptions: SingletonOptions = {
@@ -39,9 +44,9 @@ export function Singleton(options: SingletonOptions = {}): <T extends Clazz<any>
                 const param = options.registry?.get(hash);
                 return param;
             }) ?? [];
-        // Instantiate object and register it in the registry
-        const hash = Registry.getHash(clazz);
-        const instance = Registry.instantiate(clazz, newArgs); // new clazz(...newArgs);
+        // Instantiate object and register it in the registry via provided key or hash
+        const hash = options.key ?? Registry.getHash(clazz);
+        const instance = Registry.instantiate(clazz, newArgs);
         options.registry?.addSingleton(hash, instance);
 
         // Return class, for chaining decorators

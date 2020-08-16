@@ -2,9 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2020-08-16
+
+Allow concrete injection via custom keys and remove `@Injectable()` from framwork.
+
+### Added
+
+-   Property `key` to options for `@Singleton()`, `@Transient()` and `@Inject()`
+
+    -   `key` stores class with this key and not its hash in the registry
+    -   if `key` was used for creating the singleton or transient, it also has to be used for injeciton
+
+### Breaking
+
+-   Removed `@Injectable()` from framework due to its deprecation
+
+## [0.8.0] - 2020-06-11
+
+Allow concrete parameter injection.
+
+### Added
+
+-   `@Inject()` injects concrete parameters in the constructor.
+    -   Will overwrite the injected parameters by the framework
+
+## [0.7.0] - 2020-06-08
+
+### Added
+
+-   `@Singleton()` to create singletons
+-   `@Transient()` to create transients
+-   Chaining of decorators
+
 ## [0.6.0] - 2020-06-02
 
-Add optional options for `@Injectable()` and fix typo.
+Add optional options for `@Injectable()`.
 
 ### Added
 
