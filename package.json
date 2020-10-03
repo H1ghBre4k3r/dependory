@@ -1,6 +1,6 @@
 {
     "name": "dependory",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A simple, yet powerful framework to add dependency injection to your TypeScript project.",
     "main": "build/index.js",
     "scripts": {
