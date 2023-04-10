@@ -20,7 +20,7 @@
         "dts-bundle-webpack": "^1.0.2",
         "mocha": "^10.0.0",
         "nyc": "^15.1.0",
-        "rimraf": "^4.0.7",
+        "rimraf": "^5.0.0",
         "ts-loader": "^9.3.1",
         "tslint": "^6.1.2",
         "tslint-config-prettier": "^1.18.0",
