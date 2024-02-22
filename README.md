@@ -49,7 +49,7 @@ export class OtherClass {
 }
 ```
 
-In another class, where you want to inject `OtherClass`, to the same:
+In another class, where you want to inject `OtherClass`, do the same:
 
 ```ts
 import { Singleton } from "dependory";
@@ -123,7 +123,7 @@ export class MyOtherClass {
 }
 ```
 
-Doing this, this class will be stored in your custom registry and not the the default one. This it also allows you, to scope your injections per module.
+Doing this, this class will be stored in your custom registry and not the the default one. This also allows you to scope your injections per module.
 
 ### Inject class properties
 
